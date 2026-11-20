@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>待辦清單 — 極簡暖色看板管理</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app-container">
+    <!-- 頁首區塊 -->
+    <header class="app-header">
+      <div>
+        <h1 class="app-title">待辦清單</h1>
+        <p id="current-date" class="app-date"></p>
+      </div>
+      <div class="stats-pill" id="stats-summary" aria-live="polite">
+        0 項待辦
+      </div>
+    </header>
+
+    <!-- 頂部控制面板：新增任務表單 + 分類篩選列 -->
+    <section class="control-panel">
+      <form id="todo-form" class="todo-form" autocomplete="off">
+        <div class="input-row">
+          <input
+            type="text"
+            id="todo-input"
+            class="todo-input"
+            placeholder="新增待辦事項..."
+            aria-label="新增待辦事項"
+            maxlength="120"
+            required
+          />
+          <input
+            type="text"
+            id="todo-assignee"
+            class="todo-assignee-input"
+            placeholder="負責人 (選填)"
+            aria-label="負責人"
+            maxlength="30"
+          />
+        </div>
+        <div class="form-options-row">
+          <div class="option-group">
+            <span class="option-label">分類</span>
+            <div class="category-selector" role="radiogroup" aria-label="任務分類">
+              <input type="radio" name="category" id="cat-work" value="work" checked />
+              <label for="cat-work" class="cat-option cat-work">工作</label>
+
+              <input type="radio" name="category" id="cat-life" value="life" />
+              <label for="cat-life" class="cat-option cat-life">生活</label>
+            </div>
+          </div>
+
+          <div class="option-group">
+            <span class="option-label">優先度</span>
+            <div class="priority-selector" role="radiogroup" aria-label="任務優先程度">
+              <input type="radio" name="priority" id="prio-high" value="high" />
+              <label for="prio-high" class="prio-option prio-opt-high">High</label>
+
+              <input type="radio" name="priority" id="prio-medium" value="medium" checked />
+              <label for="prio-medium" class="prio-option prio-opt-medium">Medium</label>
+
+              <input type="radio" name="priority" id="prio-low" value="low" />
+              <label for="prio-low" class="prio-option prio-opt-low">Low</label>
+            </div>
+          </div>
+
+          <button type="submit" id="add-btn" class="add-btn" aria-label="新增任務">
+            <span>新增任務</span>
+          </button>
+        </div>
+      </form>
+
+      <!-- 分類篩選與清除列 -->
+      <div class="toolbar-row">
+        <nav class="filter-bar" aria-label="分類篩選">
+          <div class="filter-tabs" role="tablist">
+            <button type="button" class="filter-tab active" data-filter="all" role="tab" aria-selected="true">
+              全部 <span class="tab-count" id="count-all">0</span>
+            </button>
+            <button type="button" class="filter-tab" data-filter="work" role="tab" aria-selected="false">
+              工作 <span class="tab-count" id="count-work">0</span>
+            </button>
+            <button type="button" class="filter-tab" data-filter="life" role="tab" aria-selected="false">
+              生活 <span class="tab-count" id="count-life">0</span>
+            </button>
+          </div>
+        </nav>
+
+        <div id="app-footer" class="app-footer hidden">
+          <span id="remaining-count" class="remaining-count">剩餘 0 項未完成</span>
+          <button type="button" id="clear-completed-btn" class="clear-btn">
+            清除 Done 任務
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 三欄看板區塊 (To-do / Process / Done) -->
+    <section class="board-grid" aria-label="任務狀態看板">
+      <!-- Column 1: To-do -->
+      <div class="board-column" data-status="todo">
+        <div class="column-header">
+          <div class="column-title-group">
+            <span class="status-dot dot-todo" aria-hidden="true"></span>
+            <h2 class="column-title">To-do</h2>
+          </div>
+          <span class="column-count" id="count-status-todo">0</span>
+        </div>
+        <div class="column-dropzone" id="list-todo" data-status="todo" aria-label="To-do 任務清單"></div>
+      </div>
+
+      <!-- Column 2: Process -->
+      <div class="board-column" data-status="process">
+        <div class="column-header">
+          <div class="column-title-group">
+            <span class="status-dot dot-process" aria-hidden="true"></span>
+            <h2 class="column-title">Process</h2>
+          </div>
+          <span class="column-count" id="count-status-process">0</span>
+        </div>
+        <div class="column-dropzone" id="list-process" data-status="process" aria-label="Process 任務清單"></div>
+      </div>
+
+      <!-- Column 3: Done -->
+      <div class="board-column" data-status="done">
+        <div class="column-header">
+          <div class="column-title-group">
+            <span class="status-dot dot-done" aria-hidden="true"></span>
+            <h2 class="column-title">Done</h2>
+          </div>
+          <span class="column-count" id="count-status-done">0</span>
+        </div>
+        <div class="column-dropzone" id="list-done" data-status="done" aria-label="Done 任務清單"></div>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
